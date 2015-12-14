@@ -55,9 +55,9 @@ void DataTransformer<Dtype>::Transform(const Datum& datum,
 
   Dtype* mean = NULL;
   if (has_mean_file) {
-    CHECK_EQ(datum_channels, data_mean_.channels());
-    CHECK_EQ(datum_height, data_mean_.height());
-    CHECK_EQ(datum_width, data_mean_.width());
+    //CHECK_EQ(datum_channels, data_mean_.channels());
+    //CHECK_EQ(datum_height, data_mean_.height());
+    //CHECK_EQ(datum_width, data_mean_.width());
     mean = data_mean_.mutable_cpu_data();
   }
   if (has_mean_values) {
@@ -107,8 +107,11 @@ void DataTransformer<Dtype>::Transform(const Datum& datum,
           datum_element = datum.float_data(data_index);
         }
         if (has_mean_file) {
+          int mean_index = (c * height + h) * width + w;
+          //transformed_data[top_index] =
+          //  (datum_element - mean[data_index]) * scale;
           transformed_data[top_index] =
-            (datum_element - mean[data_index]) * scale;
+            (datum_element - mean[mean_index]) * scale;
         } else {
           if (has_mean_values) {
             transformed_data[top_index] =
